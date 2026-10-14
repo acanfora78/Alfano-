@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { BrandSection } from "@/components/home/BrandSection";
+import { DriveBy } from "@/components/home/DriveBy";
 import { FinalCta } from "@/components/home/FinalCta";
 import { Hero } from "@/components/home/Hero";
 import { Immersive } from "@/components/home/Immersive";
+import { IntroIgnition } from "@/components/home/IntroIgnition";
 import { ServicesSection } from "@/components/home/ServicesSection";
 import { StockSection } from "@/components/home/StockSection";
+import { VelocityMarquee } from "@/components/home/VelocityMarquee";
 import { JsonLd } from "@/components/ui/Section";
 import { dealerJsonLd } from "@/lib/seo";
 import { applyFilters, EMPTY_FILTERS } from "@/lib/vehicles/filters";
@@ -26,8 +29,11 @@ export default async function HomePage() {
   return (
     <>
       <JsonLd data={dealerJsonLd()} />
+      <IntroIgnition />
       <Hero />
+      <VelocityMarquee words={["Beyond the drive", "Pompei", "Vendita", "Noleggio", "Dal 1985"]} />
       <StockSection vehicles={selection} total={vehicles.length} />
+      <DriveBy />
       <Immersive />
       <ServicesSection />
       <BrandSection />

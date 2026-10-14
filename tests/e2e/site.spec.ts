@@ -1,5 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
+// Nei test funzionali l'intro cinematografica è già "vista" (ha test dedicati in fondo)
+test.beforeEach(async ({ page }, info) => {
+  if (!info.title.startsWith("intro")) await page.addInitScript(() => sessionStorage.setItem("ac-intro-v2", "1"));
+});
+
 const routes = ["/", "/stock-auto/", "/servizi/", "/chi-siamo/", "/contatti/", "/privacy-policy/", "/cookie-policy/", "/noleggio-auto-breve-lungo-termine-pompei/", "/tour-barca-noleggio-imbarcazioni-pompei/", "/stock-auto/alfa-romeo-stelvio-2-2-turbo-diesel-160-cv-at8-q4-qa-2021-qa-1/"];
 
 /** Errori JS e risposte HTTP fallite, esclusa l'immagine volutamente rotta della fixture QA. */
@@ -27,7 +32,7 @@ for (const r of routes) {
 
 test("home: hero, CTA e sezioni principali", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(/Beyond\s*the drive/i);
+  await expect(page.getByRole("heading", { level: 1, name: "Beyond the drive." })).toBeVisible();
   await expect(page.getByRole("link", { name: /Scopri le vetture/i })).toHaveAttribute("href", "/stock-auto/");
   await expect(page.getByRole("heading", { name: /La tua prossima auto/i })).toBeAttached();
   await expect(page.getByRole("heading", { name: /Ogni dettaglio/i })).toBeAttached();
@@ -127,4 +132,31 @@ test("nessun overflow orizzontale a 320 px (schermi stretti)", async ({ page }) 
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(overflow, r).toBeLessThanOrEqual(0);
   }
+});
+
+test("intro: si avvia alla prima visita, si può saltare e non riparte nella stessa sessione", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" }); // listener attivi dopo l'hydration
+  await expect(page.locator("html")).toHaveAttribute("data-intro", "play");
+  await page.keyboard.press("Space");
+  await expect(page.locator("html")).toHaveAttribute("data-intro", "done", { timeout: 2000 });
+  await expect(page.locator(".intro")).toBeHidden();
+  await page.reload();
+  await expect(page.locator("html")).not.toHaveAttribute("data-intro", "play");
+});
+
+test("intro: termina da sola e rende l'hero utilizzabile", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("html")).toHaveAttribute("data-intro", "done", { timeout: 6000 });
+  await page.getByRole("link", { name: /Scopri le vetture/i }).click();
+  await expect(page).toHaveURL(/\/stock-auto\/$/);
+});
+
+test("intro: mai mostrata con prefers-reduced-motion", async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  await page.goto("http://localhost:3100/");
+  await expect(page.locator(".intro")).toBeHidden();
+  await expect(page.locator("html")).not.toHaveAttribute("data-intro", /play|skip/);
+  await expect(page.getByRole("heading", { level: 1, name: "Beyond the drive." })).toBeVisible();
+  await ctx.close();
 });

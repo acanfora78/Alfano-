@@ -9,7 +9,7 @@ export function ServicesSection() {
     <section aria-labelledby="servizi-title" className="relative border-t border-line py-24 sm:py-36">
       <div className="container-x">
         <div className="grid gap-10 lg:grid-cols-12">
-          <SectionHeading id="servizi-title" index="03" eyebrow="Servizi" lines={["Mobilità,", "su misura."]} className="lg:col-span-7" />
+          <SectionHeading id="servizi-title" index="04" eyebrow="Servizi" lines={["Mobilità,", "su misura."]} className="lg:col-span-7" />
           <p className="max-w-md self-end text-ice/75 leading-relaxed lg:col-span-5" data-reveal>
             Vendita e noleggio di auto, motocicli, e-bike e imbarcazioni. Un team che ti aiuta a trovare il veicolo più adatto,
             che tu voglia acquistarlo o prenderlo a noleggio.

@@ -287,6 +287,7 @@ export function Catalog({ vehicles, ok }: { vehicles: Vehicle[]; ok: boolean }) 
           </div>
         ) : (
           <>
+            <h2 className="sr-only">Vetture in elenco</h2>
             <ul className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
               {results.slice(0, visible).map((v, i) => (
                 <li key={v.id}>

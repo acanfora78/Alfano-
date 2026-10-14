@@ -16,7 +16,7 @@ export function BrandSection() {
     <section aria-labelledby="brand-title" className="relative overflow-hidden border-t border-line bg-graphite/40 py-24 sm:py-36">
       <div className="container-x grid gap-16 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-5">
-          <SectionHeading id="brand-title" index="04" eyebrow="Chi siamo" lines={["Dal 1985,", "a Pompei."]} />
+          <SectionHeading id="brand-title" index="05" eyebrow="Chi siamo" lines={["Dal 1985,", "a Pompei."]} />
           <p className="mt-8 max-w-md leading-relaxed text-ice/75" data-reveal>
             Serietà, professionalità e umiltà contraddistinguono da sempre Alfano Cars, realtà specializzata in vendita e
             noleggio auto a Pompei. Un rapporto qualità-prezzo curato, nella consapevolezza di poter soddisfare le esigenze

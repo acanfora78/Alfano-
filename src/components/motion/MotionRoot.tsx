@@ -4,9 +4,10 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 /**
- * Motore di animazione unico per tutto il sito (~1 KB):
+ * Motore di animazione DOM unico per tutto il sito:
  * - [data-reveal]  → aggiunge .is-visible quando entra nel viewport
  * - [data-parallax] → aggiorna --p (-1…1) solo per gli elementi visibili
+ * - [data-tilt] / [data-magnetic] → inclinazione 3D e attrazione verso il cursore
  * Rispetta prefers-reduced-motion e pulisce tutti i listener al cambio pagina.
  */
 export function MotionRoot() {
@@ -80,12 +81,65 @@ export function MotionRoot() {
       window.addEventListener("resize", schedule, { passive: true });
     }
 
+    /* ── Cursore: card con inclinazione 3D + riflesso, pulsanti magnetici ── */
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    let tilt: HTMLElement | null = null;
+    let magnet: HTMLElement | null = null;
+    const release = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.style.transition = "transform .8s cubic-bezier(.16,1,.3,1)";
+      el.style.transform = "";
+      setTimeout(() => {
+        if (el !== tilt && el !== magnet) el.style.transition = "";
+      }, 800);
+    };
+    const onPointer = (e: PointerEvent) => {
+      const target = e.target as Element | null;
+      const t = target?.closest<HTMLElement>("[data-tilt]") ?? null;
+      if (t !== tilt) {
+        release(tilt);
+        tilt = t;
+      }
+      if (tilt && tilt.classList.contains("is-visible")) {
+        const r = tilt.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        tilt.style.transition = "transform .25s ease-out";
+        tilt.style.transform = `perspective(1100px) rotateX(${((0.5 - py) * 7).toFixed(2)}deg) rotateY(${((px - 0.5) * 9).toFixed(2)}deg) translate3d(0,-6px,0)`;
+        tilt.style.setProperty("--mx", `${(px * 100).toFixed(1)}%`);
+        tilt.style.setProperty("--my", `${(py * 100).toFixed(1)}%`);
+      }
+      const m = target?.closest<HTMLElement>("[data-magnetic]") ?? null;
+      if (m !== magnet) {
+        release(magnet);
+        magnet = m;
+      }
+      if (magnet) {
+        const r = magnet.getBoundingClientRect();
+        const dx = e.clientX - (r.left + r.width / 2);
+        const dy = e.clientY - (r.top + r.height / 2);
+        magnet.style.transition = "transform .3s cubic-bezier(.16,1,.3,1)";
+        magnet.style.transform = `translate3d(${(dx * 0.22).toFixed(1)}px, ${(dy * 0.35).toFixed(1)}px, 0)`;
+      }
+    };
+    const onLeave = () => {
+      release(tilt);
+      release(magnet);
+      tilt = magnet = null;
+    };
+    if (fine && !reduce) {
+      document.addEventListener("pointermove", onPointer, { passive: true });
+      document.documentElement.addEventListener("pointerleave", onLeave);
+    }
+
     return () => {
       revealIO.disconnect();
       parallaxIO.disconnect();
       mo.disconnect();
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
+      document.removeEventListener("pointermove", onPointer);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
       if (frame) cancelAnimationFrame(frame);
     };
   }, [pathname]);

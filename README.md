@@ -3,7 +3,7 @@
 Sito ufficiale di **Alfano Cars** (Pompei): vendita e noleggio auto, noleggio con conducente, auto per eventi, furgoni, moto/e-bike e tour in barca.
 Direzione artistica *Cinematic Luxury 2050*.
 
-**Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4. Nessuna libreria di animazione: tutto il motion è CSS + un unico componente client da ~1 KB (`MotionRoot`).
+**Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · GSAP 3 + ScrollTrigger (sequenze guidate dallo scroll) · Lenis (scroll fluido, solo desktop).
 
 > Prima della pubblicazione leggere **[docs/SECURITY-AUDIT.md](docs/SECURITY-AUDIT.md)**: il sito WordPress attuale è compromesso (spam di casinò).
 
@@ -38,6 +38,23 @@ Requisiti: Node.js ≥ 20.9.
 | `/noleggio-auto-breve-lungo-termine-pompei/` | Landing storica (URL preservato) |
 | `/tour-barca-noleggio-imbarcazioni-pompei/` | Landing storica (URL preservato) |
 | `/privacy-policy/`, `/cookie-policy/` | Informative |
+
+## Sistema di movimento — Immersive 2050
+
+| Effetto | Dove | Tecnica |
+|---------|------|---------|
+| Intro "Ignition" (≈3,5 s): orizzonte, profilo auto disegnato dalla luce, fari, partenza con scie, apertura a serranda | Home, una volta per sessione | CSS puro (`IntroIgnition`), saltabile con click/tasto/rotella/tocco |
+| Reel dell'hero: 5 inquadrature reali con movimenti di camera, lampo e riflesso a ogni taglio, contatore "REC" | Home | CSS + `HeroReel` |
+| Scie di luce che accelerano con lo scroll | Hero | Canvas 2D (`LightTrails`) |
+| Titolo lettera per lettera in prospettiva | Hero | CSS |
+| Camera che avanza e letterbox che si chiude uscendo dall'hero | Hero | GSAP ScrollTrigger (scrub) |
+| Fascia tipografica cinetica (velocità e verso dello scroll) | Home | `VelocityMarquee` |
+| "Il piazzale, in movimento": sezione bloccata, auto che scorrono in orizzontale con inclinazione e scia proporzionali alla velocità | Home | GSAP pin + `containerAnimation` (`DriveBy`) |
+| Tagli a tendina con filo di luce tra i dettagli | Home | CSS clip-path (`Immersive`) |
+| Card con inclinazione 3D e riflesso che segue il cursore, pulsanti magnetici | Ovunque (desktop) | `MotionRoot` |
+| Tendina tra le pagine, reveal, parallasse, scroll fluido | Ovunque | CSS, `MotionRoot`, `SmoothScroll` |
+
+Regole: solo `transform`/`opacity`/`clip-path`; GSAP caricato dopo `load` in un momento di inattività; tutti i loop si fermano fuori viewport o con la scheda nascosta; con **prefers-reduced-motion** intro, reel, scie e sezioni bloccate sono disattivati (la sezione "in movimento" diventa un carosello scorrevole). L'intro non rappresenta un veicolo in vendita: è un'illustrazione grafica.
 
 ## Inventario veicoli
 

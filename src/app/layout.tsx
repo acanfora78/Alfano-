@@ -5,6 +5,7 @@ import { FloatingContact } from "@/components/contact/FloatingContact";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { MotionRoot } from "@/components/motion/MotionRoot";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { business, siteUrl } from "@/config/site";
 import "./globals.css";
 
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <FloatingContact />
         <MotionRoot />
+        <SmoothScroll />
         <ConsentAndAnalytics />
       </body>
     </html>

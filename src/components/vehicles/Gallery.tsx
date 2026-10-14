@@ -20,6 +20,7 @@ export function Gallery({ images, title }: { images: Img[]; title: string }) {
     if (!dlg) return;
     if (full && !dlg.open) dlg.showModal();
     if (!full && dlg.open) dlg.close();
+    document.body.style.overflow = full ? "hidden" : "";
   }, [full]);
 
   const onKey = (e: React.KeyboardEvent) => {

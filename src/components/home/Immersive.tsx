@@ -54,7 +54,7 @@ export function Immersive() {
     <section aria-labelledby="immersive-title" className="relative bg-obsidian">
       <div className="container-x pb-16 pt-8 sm:pb-24">
         <p className="eyebrow mb-6 flex items-center gap-4" data-reveal="fade">
-          <span className="tabular text-ion">02</span>
+          <span className="tabular text-ion">03</span>
           <span aria-hidden className="h-px w-10 bg-line-strong" />
           Cura automobilistica
         </p>
@@ -71,11 +71,29 @@ export function Immersive() {
             <div
               key={s.k}
               aria-hidden={i !== active}
-              className={`absolute inset-0 transition-[opacity,transform] duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] motion-reduce:transition-none ${
-                i === active ? "scale-100 opacity-100" : "scale-[1.06] opacity-0"
-              }`}
+              className="absolute inset-0 overflow-hidden"
+              style={
+                i === active
+                  ? { zIndex: 2, clipPath: "inset(0 0 0 0)", transition: "clip-path 1.25s cubic-bezier(.77,0,.18,1)" }
+                  : { zIndex: 1, clipPath: "inset(0 0 0 100%)", transition: "clip-path 0s linear 1.3s" }
+              }
             >
-              <Image src={s.image.src} alt={s.image.alt} fill sizes="100vw" className="object-cover" />
+              <div
+                className="absolute inset-0 transition-transform duration-[2600ms] ease-[cubic-bezier(.16,1,.3,1)] motion-reduce:transition-none"
+                style={{ transform: i === active ? "scale(1.02)" : "scale(1.18)" }}
+              >
+                <Image src={s.image.src} alt={s.image.alt} fill sizes="100vw" className="object-cover" />
+              </div>
+              {/* linea di luce sul bordo del taglio */}
+              <span
+                aria-hidden
+                className="absolute inset-y-0 left-0 z-10 w-[2px] bg-ion shadow-[0_0_30px_4px_rgba(138,175,255,.7)]"
+                style={
+                  i === active
+                    ? { transform: "translateX(0)", opacity: 0, transition: "transform 1.25s cubic-bezier(.77,0,.18,1), opacity .5s ease 1.05s" }
+                    : { transform: "translateX(100vw)", opacity: 1, transition: "none" }
+                }
+              />
             </div>
           ))}
           <div className="absolute inset-0 bg-gradient-to-r from-obsidian/85 via-obsidian/30 to-transparent" />

@@ -12,6 +12,7 @@ export function VehicleCard({ vehicle: v, priority = false, delay = 0 }: { vehic
   return (
     <article
       data-reveal
+      data-tilt
       style={{ ["--reveal-delay" as string]: `${delay}ms` }}
       className="card group relative flex h-full flex-col overflow-hidden rounded-[1.25rem] border border-line bg-graphite/60 transition-colors duration-500 hover:border-line-strong"
     >

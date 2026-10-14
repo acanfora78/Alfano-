@@ -17,7 +17,7 @@ export function FinalCta() {
 
       <div className="container-x py-28 sm:py-40">
         <p className="eyebrow mb-6 flex items-center gap-4" data-reveal="fade">
-          <span className="tabular text-ion">05</span>
+          <span className="tabular text-ion">06</span>
           <span aria-hidden className="h-px w-10 bg-line-strong" /> Contatti
         </p>
         <h2 id="cta-title" className="headline-xl max-w-[15ch] text-balance" data-reveal="fade">
