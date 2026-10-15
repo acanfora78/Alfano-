@@ -6,6 +6,7 @@ import { FinalCta } from "@/components/home/FinalCta";
 import { FinalScene } from "@/components/home/FinalScene";
 import { Hero } from "@/components/home/Hero";
 import { Immersive } from "@/components/home/Immersive";
+import { IntroIgnition } from "@/components/home/IntroIgnition";
 import { ServicesInMotion } from "@/components/home/ServicesInMotion";
 import { StockSection } from "@/components/home/StockSection";
 import { VelocityMarquee } from "@/components/home/VelocityMarquee";
@@ -30,7 +31,9 @@ export default async function HomePage() {
   return (
     <>
       <JsonLd data={dealerJsonLd()} />
-      {/* SEQUENZA 1 — apertura: lo spot */}
+      {/* INTRO — l'auto disegnata dalla luce parte a 300 km/h e apre il sito */}
+      <IntroIgnition />
+      {/* SEQUENZA 1 — la protagonista nello showroom */}
       <Hero />
       {/* SEQUENZA 2 — Beyond the ordinary */}
       <BeyondScene />

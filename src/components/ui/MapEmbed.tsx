@@ -25,11 +25,11 @@ export function MapEmbed({ className = "" }: { className?: string }) {
       ) : (
         <>
           <Image
-            src="/images/showroom/entrance-graded.jpg"
-            alt="Ingresso della sede Alfano Cars a Pompei"
+            src="/images/alfano/gle-coupe-sede.jpg"
+            alt="La sede Alfano Cars a Pompei con l'insegna Vendita Auto e Noleggio"
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover opacity-60"
+            className="object-cover object-[50%_45%] opacity-60"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/40 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 p-6 sm:flex-row sm:items-end sm:justify-between">

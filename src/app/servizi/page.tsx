@@ -25,7 +25,7 @@ export default function ServicesPage() {
         eyebrow="Servizi"
         lines={["Mobilità,", "su misura."]}
         intro="Alfano Cars è un nuovo concept per la vendita e il noleggio di auto, motocicli ed e-bike, con servizi dedicati anche agli eventi e al mare. Ecco cosa possiamo fare per te."
-        image={{ src: "/images/cinema/mountain-road.jpg", alt: "Coupé scura in movimento su una strada di montagna" }}
+        image={{ src: "/images/alfano/grecale-noleggio.jpg", alt: "Maserati Grecale nello showroom Alfano Cars" }}
         crumbs={[{ href: "/", label: "Home" }, { label: "Servizi" }]}
       />
 
@@ -45,12 +45,12 @@ export default function ServicesPage() {
         {services.map((s, i) => (
           <section key={s.slug} id={s.slug} aria-labelledby={`${s.slug}-t`} className="container-x scroll-mt-36 py-20 sm:py-28">
             <div className={`grid items-center gap-10 lg:grid-cols-12 lg:gap-16 ${i % 2 ? "lg:[&>*:first-child]:order-2" : ""}`}>
-              <figure className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] border border-line lg:col-span-6" data-reveal="mask">
+              <figure className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[1.25rem] border border-line lg:col-span-5 lg:max-w-none" data-reveal="mask">
                 <div data-parallax style={{ ["--parallax-range" as string]: "36px" }} className="absolute inset-0">
-                  <Image src={s.image.src} alt={s.image.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover brightness-[.82]" />
+                  <Image src={s.image.src} alt={s.image.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
                 </div>
               </figure>
-              <div className="lg:col-span-6">
+              <div className="lg:col-span-6 lg:col-start-7">
                 <p className="eyebrow flex items-center gap-4" data-reveal="fade">
                   <span className="tabular text-ion">{s.index}</span>
                   <span aria-hidden className="h-px w-10 bg-line-strong" /> {s.kicker}

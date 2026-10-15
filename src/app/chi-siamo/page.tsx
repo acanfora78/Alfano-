@@ -6,6 +6,7 @@ import { MapEmbed } from "@/components/ui/MapEmbed";
 import { PageHero } from "@/components/ui/PageHero";
 import { JsonLd, SectionHeading } from "@/components/ui/Section";
 import { TrackedLink } from "@/components/ui/TrackedLink";
+import { allPhotos } from "@/config/photos";
 import { business, fullAddress, mapsSearchUrl } from "@/config/site";
 import { breadcrumbJsonLd } from "@/lib/seo";
 
@@ -17,14 +18,6 @@ export const metadata: Metadata = {
   openGraph: { title: "Chi siamo | Alfano Cars", url: "/chi-siamo/" },
 };
 
-const gallery = [
-  { src: "/images/showroom/lounge-2.jpg", alt: "Area d'attesa dello showroom Alfano Cars", span: "col-span-2 row-span-2" },
-  { src: "/images/showroom/interior-portrait.jpg", alt: "Interno dello showroom con il logo Alfano Cars", span: "" },
-  { src: "/images/showroom/signage.jpg", alt: "Targa Alfano Cars con indirizzo in Via Tre Ponti", span: "" },
-  { src: "/images/fleet/stelvio-renegade.jpg", alt: "Alfa Romeo Stelvio e Jeep Renegade davanti alla sede", span: "col-span-2" },
-  { src: "/images/details/interior.jpg", alt: "Abitacolo di un'Alfa Romeo", span: "" },
-  { src: "/images/fleet/smart-forfour.jpg", alt: "smart forfour bianca nel piazzale", span: "" },
-];
 
 export default function AboutPage() {
   return (
@@ -33,7 +26,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="Chi siamo"
         lines={["Qualità e", "professionalità", "dal 1985."]}
-        image={{ src: "/images/showroom/lounge-graded.jpg", alt: "Showroom Alfano Cars" }}
+        image={{ src: "/images/alfano/rsq3-sede.jpg", alt: "La sede Alfano Cars a Pompei" }}
         crumbs={[{ href: "/", label: "Home" }, { label: "Chi siamo" }]}
       />
 
@@ -66,11 +59,21 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section aria-label="La sede" className="container-x pb-24">
-        <ul className="grid auto-rows-[38vw] grid-cols-2 gap-3 sm:auto-rows-[22vw] sm:grid-cols-4 sm:gap-4 lg:auto-rows-[16vw]">
-          {gallery.map((g, i) => (
-            <li key={g.src} className={`relative overflow-hidden rounded-[1rem] border border-line ${g.span}`} data-reveal="mask" style={{ ["--reveal-delay" as string]: `${i * 80}ms` }}>
-              <Image src={g.src} alt={g.alt} fill sizes="(min-width: 640px) 50vw, 100vw" className="object-cover brightness-[.85] transition-transform duration-[1.4s] ease-[cubic-bezier(.16,1,.3,1)] hover:scale-105" />
+      <section aria-labelledby="galleria" className="container-x pb-24">
+        <h2 id="galleria" className="eyebrow mb-8">Showroom e sede</h2>
+        <ul className="columns-2 gap-3 sm:columns-3 sm:gap-4 lg:columns-4">
+          {allPhotos.map((g, i) => (
+            <li
+              key={g.src}
+              className="relative mb-3 break-inside-avoid overflow-hidden rounded-[1rem] border border-line sm:mb-4"
+              style={{ aspectRatio: `${g.w} / ${g.h}`, ["--reveal-delay" as string]: `${(i % 4) * 80}ms` }}
+              data-reveal="mask"
+              data-cursor={g.model}
+            >
+              <Image src={g.src} alt={g.alt} fill sizes="(min-width: 1024px) 24vw, (min-width: 640px) 32vw, 50vw" className="object-cover" />
+              <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-obsidian/80 to-transparent p-3 text-[0.6rem] uppercase tracking-[0.2em] text-ice/80">
+                {g.make} {g.model}
+              </span>
             </li>
           ))}
         </ul>

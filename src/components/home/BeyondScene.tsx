@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { cinema } from "@/config/cinema";
+import { photos } from "@/config/photos";
 import { loadGsap, reducedMotion } from "@/lib/motion";
 
 const BEATS = [
@@ -22,6 +22,7 @@ export function BeyondScene() {
   const shotA = useRef<HTMLDivElement>(null);
   const shotB = useRef<HTMLDivElement>(null);
   const shade = useRef<HTMLDivElement>(null);
+  const ambientEl = useRef<HTMLDivElement>(null);
   const wordL = useRef<HTMLSpanElement>(null);
   const wordR = useRef<HTMLSpanElement>(null);
   const ticks = useRef<HTMLSpanElement>(null);
@@ -37,7 +38,9 @@ export function BeyondScene() {
       const beats = gsap.utils.toArray<HTMLElement>("[data-beat]", el);
       const ctx = gsap.context(() => {
         const mobile = window.innerWidth < 768;
-        gsap.set(frame.current, { clipPath: mobile ? "inset(30% 14% 30% 14% round 18px)" : "inset(24% 33% 24% 33% round 22px)" });
+        // Le foto sono verticali: su desktop la cornice si apre in un grande pannello a destra
+        const open = mobile ? "inset(0% 0% 0% 0% round 0px)" : "inset(5% max(var(--gutter), 5vw) 5% 52% round 22px)";
+        gsap.set(frame.current, { clipPath: mobile ? "inset(30% 14% 30% 14% round 18px)" : "inset(30% 14% 30% 66% round 22px)" });
         gsap.set(shotA.current, { scale: 1.45 });
         gsap.set(shotB.current, { clipPath: "inset(100% 0% 0% 0%)", scale: 1.3 });
         gsap.set(beats, { autoAlpha: 0, y: 60 });
@@ -55,7 +58,8 @@ export function BeyondScene() {
             },
           },
         });
-        tl.to(frame.current, { clipPath: "inset(0% 0% 0% 0% round 0px)", duration: 3.2, ease: "power2.inOut" }, 0)
+        tl.to(frame.current, { clipPath: open, duration: 3.2, ease: "power2.inOut" }, 0)
+          .to(ambientEl.current, { opacity: 1, duration: 2.4 }, 0.6)
           .to(shotA.current, { scale: 1.04, duration: 3.6, ease: "power1.out" }, 0)
           .to(wordL.current, { xPercent: -120, autoAlpha: 0, duration: 2.6, ease: "power2.in" }, 0.2)
           .to(wordR.current, { xPercent: 120, autoAlpha: 0, duration: 2.6, ease: "power2.in" }, 0.2)
@@ -86,14 +90,20 @@ export function BeyondScene() {
         Beyond the ordinary
       </h2>
 
-      <div ref={frame} className="absolute inset-0 overflow-hidden" data-cursor="Scorri">
-        <div ref={shotA} className="absolute inset-0">
-          <Image src={cinema.mountainRoad.src} alt={cinema.mountainRoad.alt} fill sizes="100vw" className="object-cover object-[60%_50%]" />
+      {/* Atmosfera della vettura dietro la cornice (desktop) */}
+      <div ref={ambientEl} aria-hidden className="absolute inset-0 opacity-60 max-md:hidden">
+        <Image src={photos.cayenne.ambient} alt="" fill sizes="100vw" className="scale-110 object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/70 to-obsidian/20" />
+      </div>
+
+      <div ref={frame} className="absolute inset-0 overflow-hidden md:[clip-path:inset(5%_max(var(--gutter),5vw)_5%_52%_round_22px)]" data-cursor="Scorri">
+        <div ref={shotA} className="absolute inset-0 md:left-[52%] md:right-[max(var(--gutter),5vw)]">
+          <Image src={photos.cayenne.src} alt={photos.cayenne.alt} fill sizes="(min-width: 768px) 48vw, 100vw" className="object-cover object-[50%_60%]" />
         </div>
-        <div ref={shotB} className="absolute inset-0">
-          <Image src={cinema.duskRoad.src} alt={cinema.duskRoad.alt} fill sizes="100vw" className="object-cover object-[45%_55%]" />
+        <div ref={shotB} className="absolute inset-0 md:left-[52%] md:right-[max(var(--gutter),5vw)]">
+          <Image src={photos.grecale.src} alt={photos.grecale.alt} fill sizes="(min-width: 768px) 48vw, 100vw" className="object-cover object-[50%_60%]" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/10 to-obsidian/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/10 to-obsidian/30 md:from-obsidian/40 md:to-transparent" />
         <div ref={shade} className="absolute inset-0 bg-obsidian opacity-0" />
       </div>
 
@@ -104,7 +114,7 @@ export function BeyondScene() {
       </p>
 
       {/* Battute narrative */}
-      <div className="beats container-x absolute inset-x-0 bottom-0 pb-14 sm:pb-20">
+      <div className="beats container-x absolute inset-x-0 bottom-0 pb-14 sm:pb-20 md:pr-[52%]">
         {BEATS.map((b, i) => (
           <div key={b.k} data-beat className="beat max-w-xl">
             <p className="eyebrow flex items-center gap-3">

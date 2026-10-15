@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { cinema } from "@/config/cinema";
+import { photos, type Photo } from "@/config/photos";
 import { services } from "@/config/services";
 import { whatsappUrl } from "@/config/site";
 import { loadGsap, reducedMotion, scheduleRefresh, whenNear } from "@/lib/motion";
@@ -11,6 +11,35 @@ import { ArrowRight, WhatsApp } from "@/components/ui/Icons";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 
 const svc = Object.fromEntries(services.map((s) => [s.slug, s]));
+
+/** Fotografia verticale nitida in cornice (desktop). */
+function Frame({ photo, className = "", sizes = "30vh", from = "md" }: { photo: Photo; className?: string; sizes?: string; from?: "md" | "lg" }) {
+  return (
+    <div
+      className={`absolute hidden overflow-hidden rounded-[1.25rem] border border-line-strong shadow-[0_50px_100px_-30px_rgba(0,0,0,.95)] ${from === "lg" ? "lg:block" : "md:block"} ${className}`}
+      style={{ aspectRatio: `${photo.w} / ${photo.h}` }}
+      data-cursor={photo.model}
+    >
+      <div data-panel-media className="absolute inset-0">
+        <Image src={photo.src} alt={photo.alt} fill sizes={sizes} className="object-cover" />
+      </div>
+    </div>
+  );
+}
+
+/** Sfondo: la stessa fotografia diffusa (desktop) e a tutto schermo nitida (mobile). */
+function Backdrop({ photo, position = "50% 60%" }: { photo: Photo; position?: string }) {
+  return (
+    <>
+      <div className="absolute inset-0 hidden md:block">
+        <Image src={photo.ambient} alt="" fill sizes="100vw" className="scale-110 object-cover" />
+      </div>
+      <div data-panel-media className="absolute inset-0 md:hidden">
+        <Image src={photo.src} alt={photo.alt} fill sizes="100vw" className="object-cover" style={{ objectPosition: position }} />
+      </div>
+    </>
+  );
+}
 
 function Chip({ children }: { children: React.ReactNode }) {
   return <li className="rounded-full border border-line-strong bg-obsidian/40 px-3.5 py-1.5 text-xs text-ice/90 backdrop-blur">{children}</li>;
@@ -107,7 +136,7 @@ export function ServicesInMotion() {
               </div>
               <div className="relative order-1 overflow-hidden md:order-2" data-cursor="Vendita">
                 <div data-panel-media className="absolute inset-0">
-                  <Image src="/images/details/key-handover-graded.jpg" alt="Consegna delle chiavi nella sede Alfano Cars" fill sizes="(min-width: 768px) 58vw, 100vw" className="object-cover" />
+                  <Image src={photos.gleSede.src} alt={photos.gleSede.alt} fill sizes="(min-width: 768px) 58vw, 100vw" className="object-cover object-[50%_62%]" />
                 </div>
               </div>
             </div>
@@ -117,9 +146,9 @@ export function ServicesInMotion() {
         {/* 02 · NOLEGGIO — a tutto schermo */}
         <article data-panel className="sticky top-0 h-[100svh] min-h-[36rem]" aria-labelledby="svc-noleggio">
           <div data-panel-inner className="absolute inset-0 origin-top overflow-hidden bg-obsidian">
-            <div data-panel-media className="absolute inset-0">
-              <Image src={cinema.sunsetDrive.src} alt={cinema.sunsetDrive.alt} fill sizes="100vw" className="object-cover object-[35%_50%]" />
-            </div>
+            <Backdrop photo={photos.tRoc} />
+            <Frame photo={photos.tRoc} sizes="34vh" className="right-[max(var(--gutter),5vw)] top-[12%] h-[66%] rotate-[1.5deg]" />
+            <Frame photo={photos.q3Bianca} from="lg" sizes="30vh" className="right-[calc(max(var(--gutter),5vw)+40vh)] top-[24%] h-[58%] -rotate-[2deg]" />
             <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/40 to-transparent" />
             <div className="container-x relative flex h-full flex-col justify-end gap-6 pb-14 sm:pb-20">
               <span aria-hidden className="text-outline font-display text-[22vw] leading-none md:text-[10vw]">02</span>
@@ -145,12 +174,12 @@ export function ServicesInMotion() {
           <div data-panel-inner className="absolute inset-0 origin-top overflow-hidden bg-obsidian">
             <div className="absolute inset-0 [clip-path:polygon(0_0,62%_0,38%_100%,0_100%)]">
               <div data-panel-media className="absolute inset-0">
-                <Image src={cinema.bodyMacro.src} alt={cinema.bodyMacro.alt} fill sizes="100vw" className="object-cover object-[45%_50%]" />
+                <Image src={photos.q8Cerimonia.src} alt={photos.q8Cerimonia.alt} fill sizes="100vw" className="object-cover object-[45%_60%] brightness-[.85]" />
               </div>
             </div>
             <div className="absolute inset-0 [clip-path:polygon(62.4%_0,100%_0,100%_100%,38.4%_100%)]">
               <div data-panel-media className="absolute inset-0">
-                <Image src="/images/services/wedding.jpg" alt="Sposi accanto a un'auto per matrimoni Alfano Cars" fill sizes="100vw" className="object-cover object-[70%_40%] brightness-[.7] saturate-[.8]" />
+                <Image src={photos.sposi.src} alt={photos.sposi.alt} fill sizes="100vw" className="object-cover object-[50%_70%] brightness-[.85]" />
               </div>
             </div>
             <span aria-hidden className="absolute left-[38%] top-0 h-full w-px origin-bottom rotate-[13deg] scale-y-[1.08] bg-ion/60 shadow-[0_0_24px_2px_rgba(138,175,255,.5)] max-md:hidden" />
@@ -175,9 +204,8 @@ export function ServicesInMotion() {
         {/* 04 · DUE RUOTE E MARE — card flottante */}
         <article data-panel className="sticky top-0 h-[100svh] min-h-[36rem]" aria-labelledby="svc-mare">
           <div data-panel-inner className="absolute inset-0 origin-top overflow-hidden bg-obsidian">
-            <div data-panel-media className="absolute inset-0">
-              <Image src={cinema.motorcycle.src} alt={cinema.motorcycle.alt} fill sizes="100vw" className="object-cover object-[60%_60%]" />
-            </div>
+            <Backdrop photo={photos.tmax} position="45% 65%" />
+            <Frame photo={photos.tmax} sizes="40vh" className="right-[max(var(--gutter),5vw)] top-[10%] h-[80%]" />
             <div className="absolute inset-0 bg-gradient-to-r from-obsidian/90 via-obsidian/40 to-transparent" />
             <div className="container-x relative flex h-full flex-col justify-center gap-6">
               <span aria-hidden className="text-outline font-display text-[22vw] leading-none md:text-[10vw]">04</span>
@@ -192,13 +220,6 @@ export function ServicesInMotion() {
                 <Ask topic="moto, e-bike, quad o tour in barca" />
               </div>
             </div>
-            <figure
-              data-tilt
-              className="card is-visible absolute bottom-10 right-[var(--gutter)] hidden aspect-[3/4] w-56 overflow-hidden rounded-2xl border border-line-strong shadow-2xl lg:block"
-            >
-              <Image src="/images/services/boat-2.jpg" alt="Imbarcazioni ormeggiate nel Golfo di Napoli" fill sizes="224px" className="object-cover" />
-              <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-obsidian p-4 text-xs uppercase tracking-[0.2em]">Golfo di Napoli</figcaption>
-            </figure>
           </div>
         </article>
       </div>

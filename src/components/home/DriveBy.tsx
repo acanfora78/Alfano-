@@ -3,20 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { photos } from "@/config/photos";
 import { loadGsap, reducedMotion, scheduleRefresh, whenNear } from "@/lib/motion";
 import { ArrowRight } from "@/components/ui/Icons";
 
-/** Fotografie scattate nella sede Alfano Cars: non indicano disponibilità attuale. */
-const FRAMES = [
-  { src: "/images/hero/stelvio-side-graded.jpg", make: "Alfa Romeo", model: "Stelvio" },
-  { src: "/images/fleet/renegade-graded.jpg", make: "Jeep", model: "Renegade" },
-  { src: "/images/fleet/maserati-levante-graded.jpg", make: "Maserati", model: "Levante" },
-  { src: "/images/fleet/fiat500x-graded.jpg", make: "Fiat", model: "500X" },
-  { src: "/images/fleet/glc-coupe-graded.jpg", make: "Mercedes-Benz", model: "GLC Coupé" },
-  { src: "/images/fleet/mini-countryman-graded.jpg", make: "MINI", model: "Countryman" },
-  { src: "/images/fleet/smart-forfour-graded.jpg", make: "smart", model: "forfour" },
-  { src: "/images/fleet/audi-q3-graded.jpg", make: "Audi", model: "Q3" },
-];
+/** Fotografie scattate nello showroom Alfano Cars: non indicano disponibilità in vendita. */
+const FRAMES = [photos.g63, photos.grecale, photos.rs3, photos.ghibli, photos.q3Grigia, photos.cayenne, photos.tRoc, photos.q3Bianca, photos.smart, photos.tmax];
 
 export function DriveBy() {
   const section = useRef<HTMLElement>(null);
@@ -133,10 +125,10 @@ export function DriveBy() {
           <div>
             <p className="eyebrow mb-4 flex items-center gap-4">
               <span className="tabular text-ion">01</span>
-              <span aria-hidden className="h-px w-10 bg-line-strong" /> The Collection · dal piazzale
+              <span aria-hidden className="h-px w-10 bg-line-strong" /> The Collection · dallo showroom
             </p>
             <h2 id="drive-title" className="headline-md">
-              Il piazzale,
+              Lo showroom,
               <br />
               <span className="text-silver">in movimento.</span>
             </h2>
@@ -147,7 +139,7 @@ export function DriveBy() {
             </span>{" "}
             / {String(FRAMES.length).padStart(2, "0")}
             <br />
-            Foto scattate in sede
+            Foto dello showroom
           </p>
         </div>
 
@@ -156,12 +148,12 @@ export function DriveBy() {
             {FRAMES.map((f, i) => (
               <li
                 key={f.src}
-                className="drive-card relative h-[52svh] w-[80vw] shrink-0 sm:h-[58svh] sm:w-[58vw] lg:w-[46vw]"
+                className="drive-card relative h-[58svh] shrink-0 aspect-[1179/1560] sm:h-[62svh]"
                 style={{ transform: "skewX(calc(var(--v) * -1deg))" }}
               >
-                <div data-drive-inner data-cursor="Piazzale" className="group relative h-full w-full overflow-hidden rounded-[1.25rem] border border-line [transform-style:preserve-3d]">
+                <div data-drive-inner data-cursor="Showroom" className="group relative h-full w-full overflow-hidden rounded-[1.25rem] border border-line [transform-style:preserve-3d]">
                 <div data-drive-img className="absolute inset-y-0 -left-[12%] w-[124%]">
-                  <Image src={f.src} alt={`${f.make} ${f.model} fotografata nella sede Alfano Cars`} fill sizes="(min-width: 1024px) 58vw, 100vw" className="object-cover" />
+                  <Image src={f.src} alt={f.alt} fill sizes="(min-width: 640px) 48vh, 44vh" className="object-cover" />
                 </div>
                 {/* scia di movimento proporzionale alla velocità */}
                 <div
@@ -169,19 +161,22 @@ export function DriveBy() {
                   className="drive-ghost"
                   style={{ transform: "translate3d(calc(var(--v) * 9px), 0, 0)", opacity: "calc(var(--va) / 22)" }}
                 >
-                  <Image src={f.src} alt="" fill sizes="(min-width: 1024px) 58vw, 100vw" className="object-cover" />
+                  <Image src={f.src} alt="" fill sizes="(min-width: 640px) 48vh, 44vh" className="object-cover" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-obsidian/85 via-obsidian/10 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-7">
                   <div>
                     <p className="eyebrow text-[0.62rem]">{f.make}</p>
-                    <p className="mt-1 font-display text-3xl tracking-tight sm:text-5xl">{f.model}</p>
+                    <p className="mt-1 font-display text-2xl tracking-tight sm:text-4xl">{f.model}</p>
                   </div>
-                  <span className="font-display text-sm tabular text-silver">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="text-right text-[0.6rem] uppercase tracking-[0.2em] text-silver">
+                    {f.label}
+                    <span className="mt-1 block font-display text-sm tabular tracking-normal">{String(i + 1).padStart(2, "0")}</span>
+                  </span>
                 </div>
                 {/* dettaglio che emerge al passaggio */}
                 <p className="absolute left-5 top-5 translate-y-2 rounded-full border border-line-strong bg-obsidian/60 px-3 py-1 text-[0.62rem] uppercase tracking-[0.2em] opacity-0 backdrop-blur transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 sm:left-7 sm:top-7">
-                  Fotografata in sede · Pompei
+                  In sede · Pompei
                 </p>
                 </div>
               </li>

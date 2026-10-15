@@ -109,11 +109,6 @@ export function Footer() {
                 Cookie policy
               </Link>
             </li>
-            <li>
-              <Link href="/crediti-immagini/" className="link-line hover:text-ice">
-                Crediti immagini
-              </Link>
-            </li>
             <CookiePreferencesButton />
             <PointerFxToggle />
           </ul>

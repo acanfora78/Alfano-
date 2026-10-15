@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import logo from "../../../public/images/brand/logo-white.png";
-import { cinema } from "@/config/cinema";
+import { photos } from "@/config/photos";
 import { whatsappUrl } from "@/config/site";
 import { loadGsap, reducedMotion, scheduleRefresh, whenNear } from "@/lib/motion";
 import { ArrowRight, WhatsApp } from "@/components/ui/Icons";
@@ -64,12 +64,14 @@ export function FinalScene() {
 
   return (
     <section ref={section} aria-labelledby="final-title" className="relative h-[100svh] min-h-[34rem] overflow-hidden bg-black">
-      {/* maschera radiale: allontanandosi, l'auto si dissolve nel buio senza bordi visibili */}
-      <div ref={car} className="absolute inset-0 origin-[50%_55%] [-webkit-mask-image:radial-gradient(ellipse_70%_65%_at_50%_52%,#000_40%,transparent_100%)] [mask-image:radial-gradient(ellipse_70%_65%_at_50%_52%,#000_40%,transparent_100%)]">
-        <picture>
-          {cinema.fogMountain.portrait && <source media="(max-width: 767px)" srcSet={cinema.fogMountain.portrait} />}
-          <Image src={cinema.fogMountain.src} alt={cinema.fogMountain.alt} fill sizes="100vw" className="object-cover object-[50%_55%]" />
-        </picture>
+      {/* La protagonista dell'apertura si allontana nel buio: maschera radiale, nessun bordo visibile */}
+      <div ref={car} className="absolute inset-0 origin-[50%_55%] [-webkit-mask-image:radial-gradient(ellipse_75%_70%_at_50%_55%,#000_45%,transparent_100%)] [mask-image:radial-gradient(ellipse_75%_70%_at_50%_55%,#000_45%,transparent_100%)]">
+        <div className="absolute inset-0 hidden md:block">
+          <Image src={photos.urus.ambient} alt="" fill sizes="100vw" className="scale-110 object-cover opacity-70" />
+        </div>
+        <div className="absolute inset-0 md:inset-y-0 md:left-1/2 md:w-auto md:-translate-x-1/2 md:aspect-[1179/1560]">
+          <Image src={photos.urus.src} alt={photos.urus.alt} fill sizes="(min-width: 768px) 76vh, 100vw" className="object-cover object-[50%_60%]" />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/60" />
       </div>
       <div ref={dark} className="absolute inset-0 bg-black opacity-60" />

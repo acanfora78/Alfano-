@@ -45,21 +45,24 @@ La home è costruita come un film in sequenze, ognuna con una propria regia (una
 
 | Scena | Regia | Tecnica |
 |-------|-------|---------|
-| **1 · Apertura** (`HeroFilm`) | Spot di ~6,5 s alla prima visita: bagliore che rivela il metallo → macro del faro → carrellata lungo la carrozzeria con riflesso → tunnel, la camera arretra e rivela l'auto → logo → "BEYOND THE DRIVE" → inviti. Saltabile; alle visite successive parte dall'ultima inquadratura. Uscendo, la camera entra nel tunnel e il letterbox si chiude | CSS (`@property` per la maschera di luce), avvio sincronizzato al caricamento dei fotogrammi; GSAP scrub in uscita |
-| **2 · Beyond the ordinary** (`BeyondScene`) | Scena bloccata: una cornice si espande fino a tutto schermo tra le parole BEYOND / ORDINARY, tre battute narrative, taglio dal basso verso una seconda inquadratura | GSAP pin + timeline scrub |
-| **The Collection** (`StockSection`, `DriveBy`) | Stock reale (card con inclinazione 3D) e il piazzale in coverflow prospettico che scorre in orizzontale, con inclinazione e scia proporzionali alla velocità | GSAP pin + `containerAnimation` |
-| **3 · Ogni dettaglio** (`Immersive`) | Macro reali con tagli a tendina e filo di luce | CSS clip-path |
+| **Intro "Ignition"** (`IntroIgnition`) | ~3,5 s alla prima visita della sessione: linea d'orizzonte, profilo di un'auto disegnato dalla luce, tachimetro fino a 300 km/h, fari, partenza con scie e apertura a serranda sul sito. Saltabile con click, tasto, rotella o tocco | CSS puro |
+| **1 · Hero** (`HeroFilm`) | La Urus nello showroom: foto nitida in una grande cornice verticale con l'atmosfera del soffitto luminoso sullo sfondo (a tutto schermo su mobile); cornice che segue il cursore; uscendo la camera avanza e il letterbox si chiude | CSS + GSAP scrub |
+| **2 · Beyond the ordinary** (`BeyondScene`) | Scena bloccata: una cornice si apre in un grande pannello verticale tra le parole BEYOND / ORDINARY, tre battute narrative, taglio verso una seconda vettura | GSAP pin + timeline scrub |
+| **The Collection** (`StockSection`, `DriveBy`) | Stock reale (card con inclinazione 3D) e lo showroom in coverflow prospettico (card verticali) che scorre in orizzontale, con inclinazione e scia proporzionali alla velocità | GSAP pin + `containerAnimation` |
+| **3 · Ogni dettaglio** (`Immersive`) | Quattro vetture dello showroom in cornice verticale, tagli a tendina con filo di luce | CSS clip-path |
 | **4 · Services in motion** (`ServicesInMotion`) | Quattro pannelli a tutto schermo che si impilano: chi esce arretra e si scurisce; layout diversi (split, full-bleed, diagonale, card flottante) | CSS sticky + GSAP scrub |
 | **5 · The Alfano experience** (`ExperienceSection`) | Testo che si accende parola per parola, foto autentiche della sede che sconfinano a velocità diverse, "Dal 1985" gigante in movimento | GSAP scrub, parallasse |
-| **Finale** (`FinalScene`) | L'auto si allontana e si dissolve nel buio, compaiono logo e claim, poi le CTA | GSAP pin + maschera radiale |
+| **Finale** (`FinalScene`) | La Urus dell'apertura si allontana e si dissolve nel buio, compaiono logo e claim, poi le CTA | GSAP pin + maschera radiale |
 
-Movimento continuo discreto: pulviscolo nella luce (canvas 2D), luci del tunnel che "respirano", riflessi periodici, CTA che pulsa, indicatori di scroll animati, fascia tipografica cinetica. Desktop: anello-cursore con etichette sui media, luce che segue il puntatore, card 3D e pulsanti magnetici — disattivabili dal footer ("Effetti cursore").
+Movimento continuo discreto: pulviscolo nella luce (canvas 2D), luci dello showroom che "respirano", riflessi periodici, CTA che pulsa, indicatori di scroll animati, fascia tipografica cinetica. Desktop: anello-cursore con etichette sui media, luce che segue il puntatore, card 3D e pulsanti magnetici — disattivabili dal footer ("Effetti cursore").
 
-**Prestazioni e accessibilità:** GSAP si carica alla prima interazione (le scene sono tutte guidate dallo scroll); le scene sotto la piega si inizializzano solo avvicinandosi; ogni loop si ferma fuori viewport o con la scheda nascosta; solo `transform`/`opacity`/`clip-path`. Con **prefers-reduced-motion** il film, i pin e gli effetti sono disattivati e tutto resta una pagina statica leggibile; senza JavaScript contenuti e CTA restano visibili. WebGL non è usato: ogni effetto è ottenibile con CSS/canvas a costo minore.
+**Prestazioni e accessibilità:** GSAP si carica alla prima interazione (le scene sono tutte guidate dallo scroll); le scene sotto la piega si inizializzano solo avvicinandosi; ogni loop si ferma fuori viewport o con la scheda nascosta; solo `transform`/`opacity`/`clip-path`. Con **prefers-reduced-motion** intro, pin ed effetti sono disattivati e tutto resta una pagina statica leggibile; senza JavaScript contenuti e CTA restano visibili. WebGL non è usato: ogni effetto è ottenibile con CSS/canvas a costo minore.
 
-### Immagini d'atmosfera
+### Fotografie
 
-Le scene usano fotografie d'atmosfera da **Unsplash** (Unsplash License, uso commerciale gratuito), ritagliate e uniformate con lo stesso color grading (`public/images/cinema`, elenco in `src/config/cinema.ts`, pagina `/crediti-immagini/`). **Non raffigurano vetture in vendita**: lo stock usa solo le foto reali indicate nell'inventario, e le foto della sede/piazzale restano quelle autentiche di Alfano Cars. Per sostituirle con riprese originali (consigliato: un breve video girato in sede) basta aggiornare `src/config/cinema.ts`.
+Il sito usa **solo fotografie reali di Alfano Cars** (showroom, sede, vetture, cerimonie), elencate in `src/config/photos.ts` e salvate in `public/images/alfano/` (per ognuna c'è una versione `-ambient` sfocata usata come atmosfera di sfondo). Le foto sono verticali: su desktop sono mostrate nitide in cornici verticali, su mobile a tutto schermo. Le vetture con cartello "Noleggio" illustrano i servizi: **non indicano disponibilità in vendita** (lo stock è solo quello del catalogo).
+
+Per aggiungere o sostituire una foto: copiarla in `public/images/alfano/`, creare la versione `-ambient` (stessa immagine ridotta a 300 px e sfocata) e aggiungerla a `src/config/photos.ts`.
 
 ## Inventario veicoli
 

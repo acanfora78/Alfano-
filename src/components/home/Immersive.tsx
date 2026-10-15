@@ -1,32 +1,33 @@
 "use client";
 
 import Image from "next/image";
+import { photos } from "@/config/photos";
 import { useEffect, useRef, useState } from "react";
 
 const steps = [
   {
-    k: "Design",
-    title: "Linee e proporzioni.",
-    text: "Guardiamo ogni vettura come la guarderai tu: dalla firma luminosa dei fari al disegno dei cerchi.",
-    image: { src: "/images/details/headlight-graded.jpg", alt: "Dettaglio del faro anteriore di una Jeep Renegade" },
+    k: "Luce",
+    title: "Sotto le luci dello showroom.",
+    text: "Le vetture ti aspettano in sede, sotto la stessa luce con cui le vedrai dal vivo: da vicino, senza filtri.",
+    photo: photos.cayenne,
   },
   {
-    k: "Abitacolo",
-    title: "Dove il viaggio prende forma.",
-    text: "Materiali, comandi, ergonomia. L'interno merita la stessa attenzione dell'esterno.",
-    image: { src: "/images/details/gear-selector-graded.jpg", alt: "Selettore del cambio automatico e consolle centrale" },
+    k: "Carattere",
+    title: "Ogni modello ha il suo.",
+    text: "Dalla city car al SUV di prestigio: ti aiutiamo a trovare quello giusto, da acquistare o da noleggiare.",
+    photo: photos.grecale,
   },
   {
-    k: "Dettaglio",
-    title: "Nulla lasciato al caso.",
-    text: "Pinze, cerchi, finiture: sono i particolari a raccontare il carattere di un'auto.",
-    image: { src: "/images/details/wheel-caliper-graded.jpg", alt: "Cerchio in lega con pinza freno rossa di un'Alfa Romeo" },
+    k: "Cerimonie",
+    title: "Per il giorno più importante.",
+    text: "Auto per matrimoni ed eventi, preparate con la cura che il momento merita.",
+    photo: photos.g63,
   },
   {
-    k: "Consegna",
-    title: "Le chiavi, il primo chilometro.",
-    text: "Il momento della consegna è l'inizio del rapporto con noi, non la sua fine.",
-    image: { src: "/images/details/key-handover-graded.jpg", alt: "Consegna delle chiavi di un'Alfa Romeo" },
+    k: "Partenza",
+    title: "Il primo chilometro inizia qui.",
+    text: "Dalla nostra sede di Pompei alla strada: il momento della consegna è l'inizio del rapporto con noi.",
+    photo: photos.q8Cerimonia,
   },
 ];
 
@@ -78,11 +79,18 @@ export function Immersive() {
                   : { zIndex: 1, clipPath: "inset(0 0 0 100%)", transition: "clip-path 0s linear 1.3s" }
               }
             >
-              <div
-                className="absolute inset-0 transition-transform duration-[2600ms] ease-[cubic-bezier(.16,1,.3,1)] motion-reduce:transition-none"
-                style={{ transform: i === active ? "scale(1.02)" : "scale(1.18)" }}
-              >
-                <Image src={s.image.src} alt={s.image.alt} fill sizes="100vw" className="object-cover" />
+              {/* atmosfera (desktop) */}
+              <div className="absolute inset-0 hidden md:block">
+                <Image src={s.photo.ambient} alt="" fill sizes="100vw" className="scale-110 object-cover opacity-80" />
+              </div>
+              {/* fotografia: a tutto schermo su mobile, in cornice verticale su desktop */}
+              <div className="absolute inset-0 overflow-hidden md:inset-y-[9%] md:left-auto md:right-[max(var(--gutter),7vw)] md:aspect-[1179/1560] md:h-[82%] md:rounded-[1.25rem] md:border md:border-line-strong md:shadow-[0_50px_100px_-30px_rgba(0,0,0,.95)]" data-cursor={s.photo.model}>
+                <div
+                  className="absolute inset-0 transition-transform duration-[2600ms] ease-[cubic-bezier(.16,1,.3,1)] motion-reduce:transition-none"
+                  style={{ transform: i === active ? "scale(1.02)" : "scale(1.18)" }}
+                >
+                  <Image src={s.photo.src} alt={s.photo.alt} fill sizes="(min-width: 768px) 62vh, 100vw" className="object-cover object-[50%_60%]" />
+                </div>
               </div>
               {/* linea di luce sul bordo del taglio */}
               <span

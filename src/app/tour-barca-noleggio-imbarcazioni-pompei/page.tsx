@@ -49,14 +49,10 @@ export default function BoatPage() {
       </PageHero>
 
       <section className="container-x grid items-center gap-12 py-20 sm:py-28 lg:grid-cols-12">
-        <div className="grid grid-cols-2 gap-4 lg:col-span-6">
-          <figure className="relative aspect-[3/4] overflow-hidden rounded-[1.25rem] border border-line" data-reveal="mask">
-            <Image src="/images/services/boat.jpg" alt="Imbarcazione a motore in navigazione" fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover" />
-          </figure>
-          <figure className="relative mt-16 aspect-[3/4] overflow-hidden rounded-[1.25rem] border border-line" data-reveal="mask" style={{ ["--reveal-delay" as string]: "150ms" }}>
-            <Image src="/images/services/boat-2.jpg" alt="Imbarcazioni ormeggiate in porto" fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover" />
-          </figure>
-        </div>
+        <figure className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[1.25rem] border border-line lg:col-span-5" data-reveal="mask">
+          <Image src="/images/alfano/rsq3-sede.jpg" alt="La sede Alfano Cars: l'insegna elenca il noleggio di auto, furgoni, moto, barche e bike" fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover object-[50%_35%]" />
+          <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-obsidian p-5 text-xs uppercase tracking-[0.2em] text-silver">La sede di Pompei</figcaption>
+        </figure>
         <div className="lg:col-span-5 lg:col-start-8">
           <h2 className="headline-md text-balance" data-reveal>
             Noleggio imbarcazioni senza patente a Pompei

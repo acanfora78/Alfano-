@@ -22,7 +22,7 @@ const blocks = [
     id: "lungo-termine",
     k: "Lungo termine",
     title: "Noleggio auto a lungo termine a Pompei",
-    image: { src: "/images/fleet/renegade-2.jpg", alt: "Jeep Renegade disponibile per il noleggio" },
+    image: { src: "/images/alfano/q3-sportback-grigia.jpg", alt: "Audi Q3 Sportback grigia con cartello Noleggio" },
     text: [
       "Il noleggio a lungo termine è la scelta per chi cerca comodità, flessibilità e soluzioni personalizzate: un'auto per un periodo prolungato, senza l'onere della proprietà.",
       "Dalle utilitarie alle auto di prestigio, per lavoro, vacanze o trasferte. Il nostro team ti aiuta a scegliere il veicolo più adatto e a definire modalità e durata del contratto.",
@@ -32,7 +32,7 @@ const blocks = [
     id: "breve-termine",
     k: "Breve termine",
     title: "Noleggio auto a breve termine a Pompei",
-    image: { src: "/images/fleet/stelvio-side.jpg", alt: "Alfa Romeo Stelvio con cartello noleggio" },
+    image: { src: "/images/alfano/rs3-noleggio.jpg", alt: "Audi RS 3 nera con cartello Noleggio" },
     text: [
       "Una soluzione rapida per esplorare la città, visitare i siti storici o affrontare un impegno di lavoro: puoi noleggiare una vettura per poche ore, una giornata intera o un weekend.",
       "Una gamma che va dalle city car alle auto di lusso. Contattaci per conoscere disponibilità e tariffe e prenotare la tua auto.",
@@ -54,7 +54,7 @@ export default function RentalPage() {
         eyebrow="Noleggio auto"
         lines={["Noleggio a breve", "e lungo termine."]}
         intro="Che tu abbia bisogno di un'auto per un breve soggiorno o per un periodo più lungo, Alfano Cars ti propone l'opzione giusta, senza stress né imprevisti."
-        image={{ src: "/images/cinema/sunset-drive.jpg", alt: "Mani sul volante durante una guida al tramonto" }}
+        image={{ src: "/images/alfano/t-roc-noleggio.jpg", alt: "Volkswagen T-Roc con cartello Noleggio nello showroom" }}
         crumbs={[{ href: "/", label: "Home" }, { href: "/servizi/", label: "Servizi" }, { label: "Noleggio auto" }]}
       >
         <TrackedLink
@@ -70,8 +70,8 @@ export default function RentalPage() {
       {blocks.map((b, i) => (
         <section key={b.id} id={b.id} aria-labelledby={`${b.id}-t`} className="container-x border-b border-line py-20 sm:py-28">
           <div className={`grid items-center gap-10 lg:grid-cols-2 lg:gap-16 ${i % 2 ? "lg:[&>*:first-child]:order-2" : ""}`}>
-            <figure className="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] border border-line" data-reveal="mask">
-              <Image src={b.image.src} alt={b.image.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover brightness-[.85]" />
+            <figure className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[1.25rem] border border-line" data-reveal="mask">
+              <Image src={b.image.src} alt={b.image.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className="object-cover" />
             </figure>
             <div>
               <p className="eyebrow" data-reveal="fade">{b.k}</p>

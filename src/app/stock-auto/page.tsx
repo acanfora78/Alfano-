@@ -25,7 +25,7 @@ export default async function StockPage() {
         eyebrow="Stock auto"
         lines={["La tua prossima auto.", "Senza compromessi."]}
         intro="Cerca tra le vetture disponibili in sede. Ogni scheda riporta i dati forniti dalla concessionaria: per conferme su disponibilità e condizioni, contattaci."
-        image={{ src: "/images/showroom/forecourt-2.jpg", alt: "Piazzale Alfano Cars con vetture esposte" }}
+        image={{ src: "/images/alfano/g63-showroom.jpg", alt: "Mercedes-AMG G 63 nello showroom Alfano Cars" }}
         crumbs={[{ href: "/", label: "Home" }, { label: "Stock auto" }]}
       />
       <section aria-label="Catalogo vetture" className="container-x py-14 sm:py-20">

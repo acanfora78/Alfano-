@@ -25,7 +25,7 @@ export default function ContactPage() {
         eyebrow="Contatti"
         lines={["La prossima scelta", "parte da qui."]}
         intro="Scrivici, chiamaci o vieni a trovarci in sede. Ti rispondiamo negli orari di apertura."
-        image={{ src: "/images/cinema/fog-mountain.jpg", alt: "Coupé scura su una strada tra le montagne nella nebbia" }}
+        image={{ src: "/images/alfano/gle-coupe-sede.jpg", alt: "La sede Alfano Cars a Pompei" }}
         crumbs={[{ href: "/", label: "Home" }, { label: "Contatti" }]}
       />
 

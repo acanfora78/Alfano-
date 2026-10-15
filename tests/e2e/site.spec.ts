@@ -1,11 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
 
-// Nei test funzionali il film d'apertura è già "visto" (ha test dedicati in fondo)
+// Nei test funzionali l'intro è già "vista" (ha test dedicati in fondo)
 test.beforeEach(async ({ page }, info) => {
-  if (!info.title.startsWith("film")) await page.addInitScript(() => sessionStorage.setItem("ac-film-v3", "1"));
+  if (!info.title.startsWith("intro")) await page.addInitScript(() => sessionStorage.setItem("ac-intro-v2", "1"));
 });
 
-const routes = ["/", "/stock-auto/", "/servizi/", "/chi-siamo/", "/contatti/", "/privacy-policy/", "/cookie-policy/", "/noleggio-auto-breve-lungo-termine-pompei/", "/tour-barca-noleggio-imbarcazioni-pompei/", "/crediti-immagini/", "/stock-auto/alfa-romeo-stelvio-2-2-turbo-diesel-160-cv-at8-q4-qa-2021-qa-1/"];
+const routes = ["/", "/stock-auto/", "/servizi/", "/chi-siamo/", "/contatti/", "/privacy-policy/", "/cookie-policy/", "/noleggio-auto-breve-lungo-termine-pompei/", "/tour-barca-noleggio-imbarcazioni-pompei/", "/stock-auto/alfa-romeo-stelvio-2-2-turbo-diesel-160-cv-at8-q4-qa-2021-qa-1/"];
 
 /** Errori JS e risposte HTTP fallite, esclusa l'immagine volutamente rotta della fixture QA. */
 function collectErrors(page: Page) {
@@ -34,7 +34,7 @@ test("home: hero, CTA e tutte le scene principali", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "Beyond the drive" })).toBeVisible();
   await expect(page.getByRole("link", { name: /Scopri le vetture/i }).first()).toHaveAttribute("href", "/stock-auto/");
-  for (const name of [/Beyond the ordinary/i, /La tua prossima auto/i, /Il piazzale/i, /Ogni dettaglio/i, /Mobilità/i, /Qualità e professionalità/i, /La prossima scelta/i]) {
+  for (const name of [/Beyond the ordinary/i, /La tua prossima auto/i, /Lo showroom/i, /Ogni dettaglio/i, /Mobilità/i, /Qualità e professionalità/i, /La prossima scelta/i]) {
     await expect(page.getByRole("heading", { name }).first()).toBeAttached();
   }
   await expect(page.locator("#final-title")).toBeAttached();
@@ -118,7 +118,7 @@ test("modulo contatti: validazione e nessun invio simulato senza backend", async
 
 test("menu mobile accessibile", async ({ page, isMobile }) => {
   test.skip(!isMobile);
-  await page.goto("/");
+  await page.goto("/", { waitUntil: "networkidle" }); // pulsante attivo dopo l'hydration
   await page.getByRole("button", { name: "Apri il menu" }).click();
   const dialog = page.getByRole("dialog", { name: "Menu di navigazione" });
   await expect(dialog).toBeVisible();
@@ -145,29 +145,41 @@ test("nessun overflow orizzontale a 320 px (schermi stretti)", async ({ page }) 
   }
 });
 
-test("film: si avvia alla prima visita, si può saltare e non riparte nella stessa sessione", async ({ page }) => {
+test("intro: si avvia alla prima visita, si può saltare e non riparte nella stessa sessione", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" }); // listener attivi dopo l'hydration
-  await expect(page.locator("html")).toHaveAttribute("data-film", "play");
+  await expect(page.locator("html")).toHaveAttribute("data-intro", "play");
+  await expect(page.locator(".intro-svg")).toBeVisible();
   await page.keyboard.press("Space");
-  await expect(page.locator("html")).toHaveAttribute("data-film", "done", { timeout: 3000 });
-  await expect(page.getByRole("button", { name: "Salta intro" })).toBeHidden();
+  await expect(page.locator("html")).toHaveAttribute("data-intro", "done", { timeout: 2000 });
+  await expect(page.locator(".intro")).toBeHidden();
   await page.reload();
-  await expect(page.locator("html")).not.toHaveAttribute("data-film", "play");
+  await expect(page.locator("html")).not.toHaveAttribute("data-intro", "play");
 });
 
-test("film: termina da solo e rende l'hero utilizzabile", async ({ page }) => {
+test("intro: termina da sola e rende l'hero utilizzabile", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("html")).toHaveAttribute("data-film", "done", { timeout: 12000 });
+  await expect(page.locator("html")).toHaveAttribute("data-intro", "done", { timeout: 8000 });
   await page.getByRole("link", { name: /Scopri le vetture/i }).first().click();
   await expect(page).toHaveURL(/\/stock-auto\/$/);
 });
 
-test("film: mai mostrato con prefers-reduced-motion", async ({ browser }) => {
+test("intro: mai mostrata con prefers-reduced-motion", async ({ browser }) => {
   const ctx = await browser.newContext({ reducedMotion: "reduce" });
   const page = await ctx.newPage();
   await page.goto("http://localhost:3100/");
-  await expect(page.locator("html")).not.toHaveAttribute("data-film", /play|skip/);
+  await expect(page.locator(".intro")).toBeHidden();
+  await expect(page.locator("html")).not.toHaveAttribute("data-intro", /play|skip/);
   await expect(page.getByRole("heading", { level: 1, name: "Beyond the drive" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Salta intro" })).toBeHidden();
   await ctx.close();
+});
+
+test("nessuna immagine rotta in home e nelle pagine principali", async ({ page }) => {
+  const broken: string[] = [];
+  page.on("response", (r) => r.request().resourceType() === "image" && r.status() >= 400 && !r.url().includes("does-not-exist") && broken.push(r.url()));
+  for (const r of ["/", "/chi-siamo/", "/servizi/", "/contatti/", "/noleggio-auto-breve-lungo-termine-pompei/", "/tour-barca-noleggio-imbarcazioni-pompei/"]) {
+    await page.goto(r);
+    for (let y = 0; y < 30; y++) await page.mouse.wheel(0, 900);
+    await page.waitForTimeout(300);
+  }
+  expect(broken).toEqual([]);
 });

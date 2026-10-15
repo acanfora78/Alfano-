@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { photos } from "@/config/photos";
 import { business, mapsSearchUrl } from "@/config/site";
 import { ArrowRight, ArrowUpRight } from "@/components/ui/Icons";
 import { TrackedLink } from "@/components/ui/TrackedLink";
@@ -54,25 +55,25 @@ export function ExperienceSection() {
         </div>
 
         {/* Composizione fotografica a più velocità, che invade le sezioni vicine */}
-        <div className="relative h-[34rem] sm:h-[44rem] lg:col-span-6 lg:-mt-56">
-          <figure className="absolute right-0 top-0 h-[64%] w-[78%] overflow-hidden rounded-[1.25rem] border border-line" data-reveal="mask" data-cursor="Sede">
-            <div data-parallax style={{ ["--parallax-range" as string]: "50px", ["--parallax-scale" as string]: "1.15" }} className="absolute inset-0">
-              <Image src="/images/showroom/lounge-graded.jpg" alt="Showroom Alfano Cars con area d'attesa" fill sizes="(min-width: 1024px) 40vw, 80vw" className="object-cover" />
+        <div className="relative h-[40rem] sm:h-[50rem] lg:col-span-6 lg:-mt-56">
+          <figure className="absolute right-0 top-0 h-[78%] overflow-hidden rounded-[1.25rem] border border-line" style={{ aspectRatio: "1179 / 1558" }} data-reveal="mask" data-cursor="La sede">
+            <div data-parallax style={{ ["--parallax-range" as string]: "40px", ["--parallax-scale" as string]: "1.12" }} className="absolute inset-0">
+              <Image src={photos.rsq3Sede.src} alt={photos.rsq3Sede.alt} fill sizes="(min-width: 1024px) 30vw, 70vw" className="object-cover" />
             </div>
           </figure>
           <figure
             data-parallax
-            style={{ ["--parallax-range" as string]: "-90px", ["--parallax-scale" as string]: "1" }}
-            className="absolute bottom-6 left-0 h-[46%] w-[46%] overflow-hidden rounded-[1.25rem] border border-line-strong shadow-[0_40px_80px_-30px_rgba(0,0,0,.9)]"
+            style={{ ["--parallax-range" as string]: "-90px", ["--parallax-scale" as string]: "1", aspectRatio: "1179 / 1564" }}
+            className="absolute bottom-10 left-0 h-[48%] overflow-hidden rounded-[1.25rem] border border-line-strong shadow-[0_40px_80px_-30px_rgba(0,0,0,.9)]"
           >
-            <Image src="/images/showroom/desk.jpg" alt="Postazione di accoglienza nello showroom" fill sizes="(min-width: 1024px) 22vw, 46vw" className="object-cover brightness-[.8]" />
+            <Image src={photos.smart.src} alt={photos.smart.alt} fill sizes="(min-width: 1024px) 18vw, 40vw" className="object-cover" />
           </figure>
           <figure
             data-parallax
-            style={{ ["--parallax-range" as string]: "-150px", ["--parallax-scale" as string]: "1" }}
-            className="absolute -bottom-24 right-[8%] h-[34%] w-[38%] overflow-hidden rounded-[1.25rem] border border-line-strong shadow-[0_40px_80px_-30px_rgba(0,0,0,.9)]"
+            style={{ ["--parallax-range" as string]: "-150px", ["--parallax-scale" as string]: "1", aspectRatio: "1179 / 1557" }}
+            className="absolute -bottom-24 right-[14%] h-[36%] overflow-hidden rounded-[1.25rem] border border-line-strong shadow-[0_40px_80px_-30px_rgba(0,0,0,.9)]"
           >
-            <Image src="/images/showroom/entrance-graded.jpg" alt="Ingresso della sede Alfano Cars a Pompei" fill sizes="(min-width: 1024px) 18vw, 38vw" className="object-cover" />
+            <Image src={photos.ghibli.src} alt={photos.ghibli.alt} fill sizes="(min-width: 1024px) 14vw, 32vw" className="object-cover" />
           </figure>
         </div>
       </div>
