@@ -3,6 +3,7 @@ import { business, fullAddress, mapsDirectionsUrl, nav, telUrl, whatsappUrl } fr
 import { ArrowUpRight, WhatsApp } from "@/components/ui/Icons";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { CookiePreferencesButton } from "@/components/consent/CookiePreferencesButton";
+import { PointerFxToggle } from "@/components/motion/CursorFollower";
 import { Logo } from "./Logo";
 
 export function Footer() {
@@ -108,7 +109,13 @@ export function Footer() {
                 Cookie policy
               </Link>
             </li>
+            <li>
+              <Link href="/crediti-immagini/" className="link-line hover:text-ice">
+                Crediti immagini
+              </Link>
+            </li>
             <CookiePreferencesButton />
+            <PointerFxToggle />
           </ul>
         </div>
       </div>

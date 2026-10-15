@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
     formats: ["image/avif", "image/webp"],
+    qualities: [60, 72, 75],
     deviceSizes: [390, 640, 828, 1080, 1280, 1600, 1920, 2400],
     imageSizes: [96, 160, 256, 384, 512],
     // Immagini dei veicoli da un feed remoto: aggiungere qui il dominio del gestionale

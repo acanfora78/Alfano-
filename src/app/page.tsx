@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { BrandSection } from "@/components/home/BrandSection";
+import { BeyondScene } from "@/components/home/BeyondScene";
 import { DriveBy } from "@/components/home/DriveBy";
+import { ExperienceSection } from "@/components/home/ExperienceSection";
 import { FinalCta } from "@/components/home/FinalCta";
+import { FinalScene } from "@/components/home/FinalScene";
 import { Hero } from "@/components/home/Hero";
 import { Immersive } from "@/components/home/Immersive";
-import { IntroIgnition } from "@/components/home/IntroIgnition";
-import { ServicesSection } from "@/components/home/ServicesSection";
+import { ServicesInMotion } from "@/components/home/ServicesInMotion";
 import { StockSection } from "@/components/home/StockSection";
 import { VelocityMarquee } from "@/components/home/VelocityMarquee";
 import { JsonLd } from "@/components/ui/Section";
@@ -29,14 +30,22 @@ export default async function HomePage() {
   return (
     <>
       <JsonLd data={dealerJsonLd()} />
-      <IntroIgnition />
+      {/* SEQUENZA 1 — apertura: lo spot */}
       <Hero />
+      {/* SEQUENZA 2 — Beyond the ordinary */}
+      <BeyondScene />
       <VelocityMarquee words={["Beyond the drive", "Pompei", "Vendita", "Noleggio", "Dal 1985"]} />
+      {/* THE COLLECTION — stock reale + piazzale in coverflow */}
       <StockSection vehicles={selection} total={vehicles.length} />
       <DriveBy />
+      {/* SEQUENZA 3 — anatomia dei dettagli */}
       <Immersive />
-      <ServicesSection />
-      <BrandSection />
+      {/* SEQUENZA 4 — servizi in movimento */}
+      <ServicesInMotion />
+      {/* SEQUENZA 5 — l'esperienza Alfano */}
+      <ExperienceSection />
+      {/* FINALE */}
+      <FinalScene />
       <FinalCta />
     </>
   );

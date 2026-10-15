@@ -39,22 +39,27 @@ Requisiti: Node.js ≥ 20.9.
 | `/tour-barca-noleggio-imbarcazioni-pompei/` | Landing storica (URL preservato) |
 | `/privacy-policy/`, `/cookie-policy/` | Informative |
 
-## Sistema di movimento — Immersive 2050
+## Esperienza cinematografica — "The WOW experience"
 
-| Effetto | Dove | Tecnica |
-|---------|------|---------|
-| Intro "Ignition" (≈3,5 s): orizzonte, profilo auto disegnato dalla luce, fari, partenza con scie, apertura a serranda | Home, una volta per sessione | CSS puro (`IntroIgnition`), saltabile con click/tasto/rotella/tocco |
-| Reel dell'hero: 5 inquadrature reali con movimenti di camera, lampo e riflesso a ogni taglio, contatore "REC" | Home | CSS + `HeroReel` |
-| Scie di luce che accelerano con lo scroll | Hero | Canvas 2D (`LightTrails`) |
-| Titolo lettera per lettera in prospettiva | Hero | CSS |
-| Camera che avanza e letterbox che si chiude uscendo dall'hero | Hero | GSAP ScrollTrigger (scrub) |
-| Fascia tipografica cinetica (velocità e verso dello scroll) | Home | `VelocityMarquee` |
-| "Il piazzale, in movimento": sezione bloccata, auto che scorrono in orizzontale con inclinazione e scia proporzionali alla velocità | Home | GSAP pin + `containerAnimation` (`DriveBy`) |
-| Tagli a tendina con filo di luce tra i dettagli | Home | CSS clip-path (`Immersive`) |
-| Card con inclinazione 3D e riflesso che segue il cursore, pulsanti magnetici | Ovunque (desktop) | `MotionRoot` |
-| Tendina tra le pagine, reveal, parallasse, scroll fluido | Ovunque | CSS, `MotionRoot`, `SmoothScroll` |
+La home è costruita come un film in sequenze, ognuna con una propria regia (una sola animazione dominante per scena):
 
-Regole: solo `transform`/`opacity`/`clip-path`; GSAP caricato dopo `load` in un momento di inattività; tutti i loop si fermano fuori viewport o con la scheda nascosta; con **prefers-reduced-motion** intro, reel, scie e sezioni bloccate sono disattivati (la sezione "in movimento" diventa un carosello scorrevole). L'intro non rappresenta un veicolo in vendita: è un'illustrazione grafica.
+| Scena | Regia | Tecnica |
+|-------|-------|---------|
+| **1 · Apertura** (`HeroFilm`) | Spot di ~6,5 s alla prima visita: bagliore che rivela il metallo → macro del faro → carrellata lungo la carrozzeria con riflesso → tunnel, la camera arretra e rivela l'auto → logo → "BEYOND THE DRIVE" → inviti. Saltabile; alle visite successive parte dall'ultima inquadratura. Uscendo, la camera entra nel tunnel e il letterbox si chiude | CSS (`@property` per la maschera di luce), avvio sincronizzato al caricamento dei fotogrammi; GSAP scrub in uscita |
+| **2 · Beyond the ordinary** (`BeyondScene`) | Scena bloccata: una cornice si espande fino a tutto schermo tra le parole BEYOND / ORDINARY, tre battute narrative, taglio dal basso verso una seconda inquadratura | GSAP pin + timeline scrub |
+| **The Collection** (`StockSection`, `DriveBy`) | Stock reale (card con inclinazione 3D) e il piazzale in coverflow prospettico che scorre in orizzontale, con inclinazione e scia proporzionali alla velocità | GSAP pin + `containerAnimation` |
+| **3 · Ogni dettaglio** (`Immersive`) | Macro reali con tagli a tendina e filo di luce | CSS clip-path |
+| **4 · Services in motion** (`ServicesInMotion`) | Quattro pannelli a tutto schermo che si impilano: chi esce arretra e si scurisce; layout diversi (split, full-bleed, diagonale, card flottante) | CSS sticky + GSAP scrub |
+| **5 · The Alfano experience** (`ExperienceSection`) | Testo che si accende parola per parola, foto autentiche della sede che sconfinano a velocità diverse, "Dal 1985" gigante in movimento | GSAP scrub, parallasse |
+| **Finale** (`FinalScene`) | L'auto si allontana e si dissolve nel buio, compaiono logo e claim, poi le CTA | GSAP pin + maschera radiale |
+
+Movimento continuo discreto: pulviscolo nella luce (canvas 2D), luci del tunnel che "respirano", riflessi periodici, CTA che pulsa, indicatori di scroll animati, fascia tipografica cinetica. Desktop: anello-cursore con etichette sui media, luce che segue il puntatore, card 3D e pulsanti magnetici — disattivabili dal footer ("Effetti cursore").
+
+**Prestazioni e accessibilità:** GSAP si carica alla prima interazione (le scene sono tutte guidate dallo scroll); le scene sotto la piega si inizializzano solo avvicinandosi; ogni loop si ferma fuori viewport o con la scheda nascosta; solo `transform`/`opacity`/`clip-path`. Con **prefers-reduced-motion** il film, i pin e gli effetti sono disattivati e tutto resta una pagina statica leggibile; senza JavaScript contenuti e CTA restano visibili. WebGL non è usato: ogni effetto è ottenibile con CSS/canvas a costo minore.
+
+### Immagini d'atmosfera
+
+Le scene usano fotografie d'atmosfera da **Unsplash** (Unsplash License, uso commerciale gratuito), ritagliate e uniformate con lo stesso color grading (`public/images/cinema`, elenco in `src/config/cinema.ts`, pagina `/crediti-immagini/`). **Non raffigurano vetture in vendita**: lo stock usa solo le foto reali indicate nell'inventario, e le foto della sede/piazzale restano quelle autentiche di Alfano Cars. Per sostituirle con riprese originali (consigliato: un breve video girato in sede) basta aggiornare `src/config/cinema.ts`.
 
 ## Inventario veicoli
 

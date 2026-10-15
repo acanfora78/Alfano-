@@ -94,6 +94,10 @@ export function MotionRoot() {
       }, 800);
     };
     const onPointer = (e: PointerEvent) => {
+      if (document.documentElement.classList.contains("no-motion")) {
+        if (tilt || magnet) onLeave();
+        return;
+      }
       const target = e.target as Element | null;
       const t = target?.closest<HTMLElement>("[data-tilt]") ?? null;
       if (t !== tilt) {
@@ -122,11 +126,11 @@ export function MotionRoot() {
         magnet.style.transform = `translate3d(${(dx * 0.22).toFixed(1)}px, ${(dy * 0.35).toFixed(1)}px, 0)`;
       }
     };
-    const onLeave = () => {
+    function onLeave() {
       release(tilt);
       release(magnet);
       tilt = magnet = null;
-    };
+    }
     if (fine && !reduce) {
       document.addEventListener("pointermove", onPointer, { passive: true });
       document.documentElement.addEventListener("pointerleave", onLeave);

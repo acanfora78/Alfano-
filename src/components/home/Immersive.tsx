@@ -54,7 +54,7 @@ export function Immersive() {
     <section aria-labelledby="immersive-title" className="relative bg-obsidian">
       <div className="container-x pb-16 pt-8 sm:pb-24">
         <p className="eyebrow mb-6 flex items-center gap-4" data-reveal="fade">
-          <span className="tabular text-ion">03</span>
+          <span className="tabular text-ion">02</span>
           <span aria-hidden className="h-px w-10 bg-line-strong" />
           Cura automobilistica
         </p>

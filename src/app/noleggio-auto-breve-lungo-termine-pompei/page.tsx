@@ -54,7 +54,7 @@ export default function RentalPage() {
         eyebrow="Noleggio auto"
         lines={["Noleggio a breve", "e lungo termine."]}
         intro="Che tu abbia bisogno di un'auto per un breve soggiorno o per un periodo più lungo, Alfano Cars ti propone l'opzione giusta, senza stress né imprevisti."
-        image={{ src: "/images/showroom/rental-sign.jpg", alt: "Cartello Noleggio su una vettura Alfano Cars" }}
+        image={{ src: "/images/cinema/sunset-drive.jpg", alt: "Mani sul volante durante una guida al tramonto" }}
         crumbs={[{ href: "/", label: "Home" }, { href: "/servizi/", label: "Servizi" }, { label: "Noleggio auto" }]}
       >
         <TrackedLink

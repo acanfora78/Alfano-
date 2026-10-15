@@ -4,6 +4,7 @@ import { ConsentAndAnalytics } from "@/components/consent/ConsentAndAnalytics";
 import { FloatingContact } from "@/components/contact/FloatingContact";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { CursorFollower } from "@/components/motion/CursorFollower";
 import { MotionRoot } from "@/components/motion/MotionRoot";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { business, siteUrl } from "@/config/site";
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <FloatingContact />
         <MotionRoot />
         <SmoothScroll />
+        <CursorFollower />
         <ConsentAndAnalytics />
       </body>
     </html>

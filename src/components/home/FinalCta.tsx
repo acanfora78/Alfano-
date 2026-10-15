@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { business, fullAddress, mapsDirectionsUrl, whatsappUrl } from "@/config/site";
 import { ArrowRight, ArrowUpRight, Clock, Pin, WhatsApp } from "@/components/ui/Icons";
@@ -7,17 +6,11 @@ import { TrackedLink } from "@/components/ui/TrackedLink";
 
 export function FinalCta() {
   return (
-    <section aria-labelledby="cta-title" className="relative isolate overflow-hidden border-t border-line">
-      <div className="absolute inset-0 -z-10">
-        <div data-parallax style={{ ["--parallax-range" as string]: "80px", ["--parallax-scale" as string]: "1.15" }} className="absolute inset-0">
-          <Image src="/images/details/steering-wheel-graded.jpg" alt="" fill sizes="100vw" className="object-cover opacity-50" />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-obsidian via-obsidian/70 to-obsidian" />
-      </div>
+    <section aria-labelledby="cta-title" className="relative isolate overflow-hidden bg-obsidian">
 
       <div className="container-x py-28 sm:py-40">
         <p className="eyebrow mb-6 flex items-center gap-4" data-reveal="fade">
-          <span className="tabular text-ion">06</span>
+          <span className="tabular text-ion">05</span>
           <span aria-hidden className="h-px w-10 bg-line-strong" /> Contatti
         </p>
         <h2 id="cta-title" className="headline-xl max-w-[15ch] text-balance" data-reveal="fade">

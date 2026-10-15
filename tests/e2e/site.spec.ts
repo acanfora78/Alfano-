@@ -1,11 +1,11 @@
 import { expect, test, type Page } from "@playwright/test";
 
-// Nei test funzionali l'intro cinematografica è già "vista" (ha test dedicati in fondo)
+// Nei test funzionali il film d'apertura è già "visto" (ha test dedicati in fondo)
 test.beforeEach(async ({ page }, info) => {
-  if (!info.title.startsWith("intro")) await page.addInitScript(() => sessionStorage.setItem("ac-intro-v2", "1"));
+  if (!info.title.startsWith("film")) await page.addInitScript(() => sessionStorage.setItem("ac-film-v3", "1"));
 });
 
-const routes = ["/", "/stock-auto/", "/servizi/", "/chi-siamo/", "/contatti/", "/privacy-policy/", "/cookie-policy/", "/noleggio-auto-breve-lungo-termine-pompei/", "/tour-barca-noleggio-imbarcazioni-pompei/", "/stock-auto/alfa-romeo-stelvio-2-2-turbo-diesel-160-cv-at8-q4-qa-2021-qa-1/"];
+const routes = ["/", "/stock-auto/", "/servizi/", "/chi-siamo/", "/contatti/", "/privacy-policy/", "/cookie-policy/", "/noleggio-auto-breve-lungo-termine-pompei/", "/tour-barca-noleggio-imbarcazioni-pompei/", "/crediti-immagini/", "/stock-auto/alfa-romeo-stelvio-2-2-turbo-diesel-160-cv-at8-q4-qa-2021-qa-1/"];
 
 /** Errori JS e risposte HTTP fallite, esclusa l'immagine volutamente rotta della fixture QA. */
 function collectErrors(page: Page) {
@@ -30,15 +30,26 @@ for (const r of routes) {
   });
 }
 
-test("home: hero, CTA e sezioni principali", async ({ page }) => {
+test("home: hero, CTA e tutte le scene principali", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1, name: "Beyond the drive." })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Scopri le vetture/i })).toHaveAttribute("href", "/stock-auto/");
-  await expect(page.getByRole("heading", { name: /La tua prossima auto/i })).toBeAttached();
-  await expect(page.getByRole("heading", { name: /Ogni dettaglio/i })).toBeAttached();
-  await expect(page.getByRole("heading", { name: /La prossima scelta/i })).toBeAttached();
+  await expect(page.getByRole("heading", { level: 1, name: "Beyond the drive" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Scopri le vetture/i }).first()).toHaveAttribute("href", "/stock-auto/");
+  for (const name of [/Beyond the ordinary/i, /La tua prossima auto/i, /Il piazzale/i, /Ogni dettaglio/i, /Mobilità/i, /Qualità e professionalità/i, /La prossima scelta/i]) {
+    await expect(page.getByRole("heading", { name }).first()).toBeAttached();
+  }
+  await expect(page.locator("#final-title")).toBeAttached();
   const ld = await page.locator('script[type="application/ld+json"]').first().textContent();
   expect(JSON.parse(ld!)["@type"]).toBe("AutoDealer");
+});
+
+test("home senza JavaScript: contenuti e CTA restano visibili", async ({ browser }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false });
+  const page = await ctx.newPage();
+  await page.goto("http://localhost:3100/");
+  await expect(page.getByRole("heading", { level: 1, name: "Beyond the drive" })).toBeVisible();
+  await expect(page.getByText("Oltre la vendita")).toBeVisible();
+  await expect(page.locator("#final-title")).toBeVisible();
+  await ctx.close();
 });
 
 test("catalogo: ricerca, filtri, ordinamento e reset funzionano davvero", async ({ page }) => {
@@ -134,29 +145,29 @@ test("nessun overflow orizzontale a 320 px (schermi stretti)", async ({ page }) 
   }
 });
 
-test("intro: si avvia alla prima visita, si può saltare e non riparte nella stessa sessione", async ({ page }) => {
+test("film: si avvia alla prima visita, si può saltare e non riparte nella stessa sessione", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" }); // listener attivi dopo l'hydration
-  await expect(page.locator("html")).toHaveAttribute("data-intro", "play");
+  await expect(page.locator("html")).toHaveAttribute("data-film", "play");
   await page.keyboard.press("Space");
-  await expect(page.locator("html")).toHaveAttribute("data-intro", "done", { timeout: 2000 });
-  await expect(page.locator(".intro")).toBeHidden();
+  await expect(page.locator("html")).toHaveAttribute("data-film", "done", { timeout: 3000 });
+  await expect(page.getByRole("button", { name: "Salta intro" })).toBeHidden();
   await page.reload();
-  await expect(page.locator("html")).not.toHaveAttribute("data-intro", "play");
+  await expect(page.locator("html")).not.toHaveAttribute("data-film", "play");
 });
 
-test("intro: termina da sola e rende l'hero utilizzabile", async ({ page }) => {
+test("film: termina da solo e rende l'hero utilizzabile", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("html")).toHaveAttribute("data-intro", "done", { timeout: 6000 });
-  await page.getByRole("link", { name: /Scopri le vetture/i }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-film", "done", { timeout: 12000 });
+  await page.getByRole("link", { name: /Scopri le vetture/i }).first().click();
   await expect(page).toHaveURL(/\/stock-auto\/$/);
 });
 
-test("intro: mai mostrata con prefers-reduced-motion", async ({ browser }) => {
+test("film: mai mostrato con prefers-reduced-motion", async ({ browser }) => {
   const ctx = await browser.newContext({ reducedMotion: "reduce" });
   const page = await ctx.newPage();
   await page.goto("http://localhost:3100/");
-  await expect(page.locator(".intro")).toBeHidden();
-  await expect(page.locator("html")).not.toHaveAttribute("data-intro", /play|skip/);
-  await expect(page.getByRole("heading", { level: 1, name: "Beyond the drive." })).toBeVisible();
+  await expect(page.locator("html")).not.toHaveAttribute("data-film", /play|skip/);
+  await expect(page.getByRole("heading", { level: 1, name: "Beyond the drive" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Salta intro" })).toBeHidden();
   await ctx.close();
 });

@@ -25,7 +25,7 @@ export default function ServicesPage() {
         eyebrow="Servizi"
         lines={["Mobilità,", "su misura."]}
         intro="Alfano Cars è un nuovo concept per la vendita e il noleggio di auto, motocicli ed e-bike, con servizi dedicati anche agli eventi e al mare. Ecco cosa possiamo fare per te."
-        image={{ src: "/images/showroom/rental-sign.jpg", alt: "Cartello Noleggio Alfano Cars" }}
+        image={{ src: "/images/cinema/mountain-road.jpg", alt: "Coupé scura in movimento su una strada di montagna" }}
         crumbs={[{ href: "/", label: "Home" }, { label: "Servizi" }]}
       />
 
